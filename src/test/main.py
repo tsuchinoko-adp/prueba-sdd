@@ -1,23 +1,22 @@
-import argparse
-from databricks.sdk.runtime import spark
-from test import taxis
+"""Minimalist Hello World program adhering to the SDD Constitution.
+
+Zero overengineering: outputs 'Hello World' directly to standard output
+using Python's native print(), guarded by pure contract assertions.
+"""
+
+GREETING: str = "Hello World"
 
 
-def main():
-    # Process command-line arguments
-    parser = argparse.ArgumentParser(
-        description="Databricks job with catalog and schema parameters",
-    )
-    parser.add_argument("--catalog", required=True)
-    parser.add_argument("--schema", required=True)
-    args = parser.parse_args()
+def main() -> None:
+    """Execute the contract validation and emit Hello World to stdout."""
+    # Contract Assertions (Phase 4 of SDD)
+    assert isinstance(GREETING, str), "Contract violation: GREETING must be of type str"
+    assert GREETING == "Hello World", "Contract violation: GREETING must equal 'Hello World'"
+    assert not hasattr(GREETING, "rdd"), "Constitution violation: Spark RDD detected"
+    assert not hasattr(GREETING, "_jdf"), "Constitution violation: Spark JVM DataFrame detected"
 
-    # Set the default catalog and schema
-    spark.sql(f"USE CATALOG `{args.catalog}`")
-    spark.sql(f"USE SCHEMA `{args.schema}`")
-
-    # Example: just find all taxis from a sample catalog
-    taxis.find_all_taxis().show(5)
+    # Minimalist Execution (Phase 3 of SDD)
+    print(GREETING)
 
 
 if __name__ == "__main__":
